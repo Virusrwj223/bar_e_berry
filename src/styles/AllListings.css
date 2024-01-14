@@ -1,0 +1,123 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  font-family: poppins;
+  box-sizing: border-box;
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  margin: 0px;
+  padding: 0px;
+  font-family: poppins;
+}
+ul {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+}
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 10%;
+  margin: auto;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  z-index: 100;
+  background-color: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+}
+.menu {
+  display: flex;
+}
+.menu li a {
+  margin: 5px;
+  padding: 5px 20px;
+  color: #ffffff;
+  font-weight: 500;
+  opacity: 0.4;
+  transition: all ease 0.3s;
+}
+.menu .active {
+  opacity: 1;
+}
+
+.menu li a:hover {
+  opacity: 1;
+  transition: all ease 0.3s;
+}
+
+.logo {
+  font-size: 2.1rem;
+  color: #414141;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.right-elements {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.right-elements a {
+  margin: 0px 10px;
+}
+.right-elements a i {
+  color: #2c2c2c;
+}
+.right-elements a:hover i {
+  color: #cf2778;
+  transition: all ease 3s;
+}
+
+.feature-product {
+  width: 100%;
+}
+
+.feature-product-container {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-column-gap: 14px;
+}
+.feature-product-box {
+  width: 200px;
+  height: 410px;
+  position: relative;
+  margin: 6% auto;
+  background: #ededed;
+  margin-top: 5px;
+  overflow: hidden;
+  border-radius: 20px;
+}
+.product-feature-text-container {
+  margin-top: 10px;
+  text-align: center;
+}
+.buy-button {
+  width: 85%;
+  padding: 10px 30px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: linear-gradient(to right, #ff3131, #ffad06);
+  border: 0;
+  outline: none;
+  border-radius: 30px;
+}
+.product-feature-image {
+  width: 50px;
+  height: 50px;
+}
+.house-image {
+  max-width: 100%;
+  max-height: 100%;
+}
