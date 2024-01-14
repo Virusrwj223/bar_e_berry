@@ -10,6 +10,7 @@ function Payments() {
   const [contract, setContract] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
   const [amount, setAmount] = useState("");
+  const [sign, setSign] = useState(null);
   const [transferAmt, setTransferAmt] = useState("");
   const [terminateStatus, setTerminateStatus] = useState("");
   const [rentalStatus, setRentalStatus] = useState("");
@@ -19,6 +20,8 @@ function Payments() {
   const [withdrawBtn, setWithdrawBtn] = useState("Withdraw");
   const [payBtn, setPayBtn] = useState("Pay");
   const [terminateBtn, setTerminateBtn] = useState("Terminate");
+  const [sharesOutstanding, setSharesOutstanding] = useState("NO");
+  const [shareSell, setShareSell] = useState(0);
   const navigate = useNavigate();
 
   async function listenForTransactionMine(transactionResponse, provider) {
@@ -45,11 +48,18 @@ function Payments() {
       setWalletAddress(walletAddress);
       setContract(contract);
       setProviders(provider);
+      setSign(signer);
       try {
         const renterData = await contract.personToRenter(
           walletAddress,
           walletAddress
         );
+        const outstandingShares = parseInt(renterData[11]);
+        if (outstandingShares > 0) {
+          setSharesOutstanding(outstandingShares);
+        } else {
+          setSharesOutstanding("NO");
+        }
         const locked_amt = parseInt(renterData[6]);
         setAmount(locked_amt);
         if (!renterData[7]) {
@@ -61,12 +71,10 @@ function Payments() {
             setRentalStatus("Rent is due");
           } else if (Date.now() / 1000 >= parseInt(renterData[4])) {
             setTerminateStatus("Terminate");
-            setRentalStatus(
-              "Thanks for renting! Please click button to confirm termination"
-            );
+            setRentalStatus("Click button to terminate");
           } else {
             setTerminateStatus("All Good!");
-            setRentalStatus("Please wait for time to pay rent");
+            setRentalStatus("Not time to pay rent");
           }
         }
       } catch (error) {
@@ -108,9 +116,29 @@ function Payments() {
       try {
         setTerminateBtn("Processing");
         const earlyTerminate = await contract.earlyTerminateRental(
-          walletAddress
+          walletAddress,
+          shareSell
         );
         await listenForTransactionMine(earlyTerminate, providers);
+        const renterData = await contract.personToRenter(
+          walletAddress,
+          walletAddress
+        );
+        const tokenId = parseInt(renterData[12]);
+        const listing = await contract.personToLandlord(walletAddress, tokenId);
+        const nft_uri = listing[2];
+        const deployed_contract_add = listing[1];
+        const childContract = new ethers.Contract(
+          deployed_contract_add,
+          abi,
+          sign
+        );
+        const burn = await childContract.terminateRental(
+          nft_uri,
+          shareSell,
+          walletAddress
+        );
+        await listenForTransactionMine(burn, providers);
         test();
         setTerminateBtn("Terminate");
       } catch (error) {
@@ -241,6 +269,15 @@ function Payments() {
                 {terminateStatus}
               </p>
               <div className="terminate-group">
+                <input
+                  id="withdrawingAmount"
+                  type="text"
+                  className="input-field"
+                  placeholder="Shares"
+                  value={shareSell}
+                  onChange={(e) => setShareSell(e.target.value)}
+                  style={{ color: "black" }}
+                />
                 <button
                   id="terminateButton"
                   type="button"
@@ -254,18 +291,25 @@ function Payments() {
           </div>
 
           <div id="right_hand" className="right-actions">
-            <p id="rent-payment-indicator" className="payment-status">
-              {rentalStatus}
-            </p>
-            <div className="payment-group">
-              <button
-                id="payButton"
-                type="button"
-                className="submit-btn"
-                onClick={payRent}
-              >
-                {payBtn}
-              </button>
+            <div className="upper-right-actions">
+              <p id="rent-payment-indicator" className="payment-status">
+                {rentalStatus}
+              </p>
+              <div className="payment-group">
+                <button
+                  id="payButton"
+                  type="button"
+                  className="submit-btn"
+                  onClick={payRent}
+                >
+                  {payBtn}
+                </button>
+              </div>
+            </div>
+            <div className="lower-right-actions">
+              <div className="shares-status">
+                <p>{sharesOutstanding} SHARES</p>
+              </div>
             </div>
           </div>
         </div>

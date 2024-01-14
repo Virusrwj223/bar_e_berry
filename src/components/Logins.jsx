@@ -35,6 +35,7 @@ function Login() {
       try {
         if (address == walletAddress) {
           const existance = await contract.person(address);
+
           if (existance[0] == "0x0000000000000000000000000000000000000000") {
             const loadingUser = await contract.addPerson(walletAddress);
             await listenForTransactionMine(loadingUser, provider);

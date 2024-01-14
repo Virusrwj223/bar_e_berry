@@ -168,7 +168,7 @@ a {
 
 .lower-form-box {
   width: 380px;
-  height: 200px;
+  height: 300px;
   position: relative;
   margin: 6% auto;
   background: linear-gradient(to bottom, #ededed, #ffffff);
@@ -190,21 +190,35 @@ a {
   font-size: 30px;
 }
 
-.right-actions {
+.upper-right-actions {
   width: 380px;
-  height: 450px;
+  height: 250px;
+  position: relative;
+  background: linear-gradient(to bottom, #ededed, #ffffff);
+  padding: 5px;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.lower-right-actions {
+  width: 380px;
+  height: 250px;
   position: relative;
   margin: 6% auto;
   background: linear-gradient(to bottom, #ededed, #ffffff);
   padding: 5px;
-  margin-top: 60px;
-  margin-bottom: 80px;
   overflow: hidden;
   border-radius: 20px;
 }
+.shares-status {
+  text-align: center;
+  margin: 68px 10px 52px 0;
+  font-size: 30px;
+}
+
 .payment-status {
   text-align: center;
-  margin: 120px 10px 120px 0;
+  margin: 68px 10px 52px 0;
   font-size: 30px;
 }
 .payment-group {

@@ -12,11 +12,14 @@ function MyListings() {
   const [rentalDuration, setRentalDuration] = useState("");
   const [rentalDeposit, setRentalDeposit] = useState("");
   const [monthlyRental, setMonthlyRental] = useState("");
+  const [tokenName, setTokenName] = useState("");
+  const [authorisedShares, setAuthorisedShares] = useState("");
   const [img, setFileImg] = useState(null);
   const [imgUri, setImgUri] = useState([[]]);
   const [contract, setContract] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
   const [providers, setProviders] = useState(null);
+  const [sign, setSign] = useState(null);
   const [mintBtn, setMintBtn] = useState("Mint");
   const navigate = useNavigate();
 
@@ -60,31 +63,43 @@ function MyListings() {
       setWalletAddress(walletAddress);
       setContract(contract);
       setProviders(provider);
+      setSign(signer);
       try {
         const img_uri_lst = [];
         const personData = await contract.person(walletAddress);
         const num_listings = parseInt(personData[3]);
         for (let i = 0; i < num_listings; i++) {
           const personData = await contract.personToLandlord(walletAddress, i);
-          const nft_uri = personData[6];
-          const duration = parseInt(personData[2]);
-          const deposit = parseInt(personData[3]);
-          const cost = parseInt(personData[4]);
-          const listingNum = parseInt(personData[1]);
-          const contTitle = personData[7];
-          const contDesc = personData[8];
+          const nft_uri = personData[2];
+          const deployed_contract_add = personData[1];
+          const childContract = new ethers.Contract(
+            deployed_contract_add,
+            abi,
+            signer
+          );
+          const landlordData = await childContract.listingMap(nft_uri);
+          const duration = parseInt(landlordData[2]);
+          const deposit = parseInt(landlordData[3]);
+          const cost = parseInt(landlordData[4]);
+          const contTitle = landlordData[6];
+          const contDesc = landlordData[7];
+          const authorised_shares = parseInt(landlordData[8]);
+          const unissued_shares =
+            parseInt(landlordData[8]) - parseInt(landlordData[9]);
+          const token_ticker = landlordData[10];
           const img_uri = await get_img_uri(nft_uri);
-          console.log(img_uri);
-          if (personData[5] == 2) {
+          if (landlordData[5] == 2) {
             img_uri_lst.push([
               img_uri,
               i,
-              listingNum,
+              token_ticker,
               duration,
               deposit,
               cost,
               contTitle,
               contDesc,
+              authorised_shares,
+              unissued_shares,
             ]);
           }
         }
@@ -108,6 +123,8 @@ function MyListings() {
       rentalDeposit != "" &&
       rentalDuration != "" &&
       monthlyRental != "" &&
+      tokenName != "" &&
+      authorisedShares != "" &&
       img != null
     ) {
       setMintBtn("Minting");
@@ -122,9 +139,11 @@ function MyListings() {
       const nft_ipfsHash = nft_cid["IpfsHash"];
       const minting = await contract.safeMint(
         walletAddress,
+        tokenName,
         parseInt(rentalDuration * 30 * 24 * 60 * 60),
         parseInt(rentalDeposit),
         parseInt(monthlyRental),
+        parseInt(authorisedShares),
         nft_ipfsHash,
         title,
         description
@@ -135,12 +154,15 @@ function MyListings() {
     }
   };
 
-  const removeList = async (tokenSerialNum, tokenID) => {
-    await contract.burn(tokenID);
-    const deacitvate = await contract.deactivateListing(
+  const removeList = async (tokenSerialNum) => {
+    const personData = await contract.personToLandlord(
       walletAddress,
       tokenSerialNum
     );
+    const deployed_contract_add = personData[1];
+    const nft_uri = personData[2];
+    const childContract = new ethers.Contract(deployed_contract_add, abi, sign);
+    const deacitvate = await childContract.deactivateListing(nft_uri);
     await listenForTransactionMine(deacitvate, providers);
     test();
   };
@@ -207,11 +229,15 @@ function MyListings() {
                       Deposit: {dataPoint[4]} XRP
                     </p>
                     <p style={{ color: "black" }}>Rental: {dataPoint[5]} XRP</p>
+                    <p style={{ color: "black" }}>Ticker: {dataPoint[2]}</p>
+                    <p style={{ color: "black" }}>
+                      {dataPoint[9]}/{dataPoint[8]} shares
+                    </p>
                     <button
                       id="createListing"
                       type="button"
                       className="delete-button"
-                      onClick={() => removeList(dataPoint[1], dataPoint[2])}
+                      onClick={() => removeList(dataPoint[1])}
                     >
                       Delete
                     </button>
@@ -222,7 +248,7 @@ function MyListings() {
           </div>
         </div>
 
-        <div id="right_hand" className="floating-child">
+        <div id="right_side" className="floating-child">
           <input
             id="title"
             type="text"
@@ -266,6 +292,24 @@ function MyListings() {
             placeholder="Monthly Rental"
             value={monthlyRental}
             onChange={(e) => setMonthlyRental(e.target.value)}
+            style={{ color: "black" }}
+          />
+          <input
+            id="token-name"
+            type="text"
+            className="input-field"
+            placeholder="Token Ticker"
+            value={tokenName}
+            onChange={(e) => setTokenName(e.target.value)}
+            style={{ color: "black" }}
+          />
+          <input
+            id="authorised-shares"
+            type="text"
+            className="input-field"
+            placeholder="Authorised Shares"
+            value={authorisedShares}
+            onChange={(e) => setAuthorisedShares(e.target.value)}
             style={{ color: "black" }}
           />
           <input

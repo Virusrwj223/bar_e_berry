@@ -10,6 +10,8 @@ function AllListings() {
   const [walletAddress, setWalletAddress] = useState("");
   const [globalListingData, setGlobalListingData] = useState([[]]);
   const [providers, setProviders] = useState(null);
+  const [sign, setSign] = useState(null);
+  const [sharesChosen, setSharesChosen] = useState(null);
   const navigate = useNavigate();
 
   const get_img_uri = async (nft_uri) => {
@@ -50,6 +52,7 @@ function AllListings() {
       setWalletAddress(walletAddress);
       setContract(contract);
       setProviders(provider);
+      setSign(signer);
       try {
         const global_listing_data = [];
         const numUsers = parseInt(await contract.numUsers());
@@ -59,18 +62,25 @@ function AllListings() {
           const numOfListings = parseInt(personData[3]);
           for (let j = 0; j < numOfListings; j++) {
             const listing = await contract.personToLandlord(address, j);
-            if (parseInt(listing[5]) == 2) {
-              const img_uri = await get_img_uri(listing[6]);
-              console.log(img_uri);
+            const nft_uri = listing[2];
+            const deployed_contract_add = listing[1];
+            const childContract = new ethers.Contract(
+              deployed_contract_add,
+              abi,
+              signer
+            );
+            const landlordData = await childContract.listingMap(nft_uri);
+            if (parseInt(landlordData[5]) == 2) {
+              const img_uri = await get_img_uri(nft_uri);
               await global_listing_data.push([
                 address,
                 j,
-                parseInt(listing[2]),
-                parseInt(listing[3]),
-                parseInt(listing[4]),
+                parseInt(landlordData[2]),
+                parseInt(landlordData[3]),
+                parseInt(landlordData[4]),
                 img_uri,
-                listing[7],
-                listing[8],
+                landlordData[6],
+                landlordData[7],
               ]);
             }
           }
@@ -90,21 +100,33 @@ function AllListings() {
 
   const purchase = async (
     owner_add,
-    serial_num,
     time,
     deposit,
-    monthlyRental
+    monthlyRental,
+    sharesPurchased,
+    listingNum
   ) => {
-    console.log(deposit);
     const bought = await contract.firstPurchase(
       walletAddress,
       owner_add,
       time,
       deposit,
       monthlyRental,
-      serial_num
+      sharesPurchased,
+      listingNum
     );
+
     await listenForTransactionMine(bought, providers);
+    const listing = await contract.personToLandlord(owner_add, listingNum);
+    const nft_uri = listing[2];
+    const deployed_contract_add = listing[1];
+    const childContract = new ethers.Contract(deployed_contract_add, abi, sign);
+    const buying = await childContract.purchaseListing(
+      nft_uri,
+      sharesPurchased,
+      walletAddress
+    );
+    await listenForTransactionMine(buying, providers);
     test();
   };
 
@@ -175,22 +197,37 @@ function AllListings() {
                     Monthly Rental: {dataPoint[4]} XRP
                   </p>
                 </div>
-                <button
-                  id="createListing"
-                  type="button"
-                  className="buy-button"
-                  onClick={() =>
-                    purchase(
-                      dataPoint[0],
-                      dataPoint[1],
-                      dataPoint[2],
-                      dataPoint[3],
-                      dataPoint[4]
-                    )
-                  }
-                >
-                  Buy
-                </button>
+                <div>
+                  <div>
+                    <input
+                      id="time"
+                      type="text"
+                      className="input-field"
+                      placeholder="No Shares"
+                      onChange={(e) => setSharesChosen(e.target.value)}
+                      style={{ color: "black" }}
+                    />
+                  </div>
+                  <div>
+                    <button
+                      id="createListing"
+                      type="button"
+                      className="buy-button"
+                      onClick={() =>
+                        purchase(
+                          dataPoint[0],
+                          dataPoint[2],
+                          dataPoint[3],
+                          dataPoint[4],
+                          parseInt(sharesChosen),
+                          dataPoint[1]
+                        )
+                      }
+                    >
+                      Buy
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           );
