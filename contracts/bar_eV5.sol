@@ -27,6 +27,7 @@ contract master {
         uint monthlyRental;
         address lWalletAddress;
         uint holdingShares;
+        uint tokenId;
     }
 
     //create renter
@@ -46,7 +47,7 @@ contract master {
         person[rWalletAddress] = Person(
             rWalletAddress,
             Landlord(0, 0x0000000000000000000000000000000000000000,""),
-            Renter(rWalletAddress,0,0,0,0,false,0,false,0,0,rWalletAddress,0),
+            Renter(rWalletAddress,0,0,0,0,false,0,false,0,0,rWalletAddress,0,0),
             0
         );
         registeredAddresses.push(rWalletAddress);
@@ -67,7 +68,7 @@ contract master {
         person[externaladdress].currentSerialNum=person[externaladdress].currentSerialNum+1;
     }
 
-    function firstPurchase(address externaladdress, address landlordaddress, uint _rentDuration, uint _deposit, uint _monthlyRent, uint _sharespurchased) public{
+    function firstPurchase(address externaladdress, address landlordaddress, uint _rentDuration, uint _deposit, uint _monthlyRent, uint _sharespurchased, uint _tokenId) public{
         require(personToRenter[externaladdress][externaladdress].hasActiveRental==false);
         require(personToRenter[externaladdress][externaladdress].depositAmount>_deposit);
         //personToLandlord[landlordaddress][_listingNum].isActiveListing=1;
@@ -84,6 +85,7 @@ contract master {
         personToRenter[externaladdress][externaladdress].rentNotificationReceived = personToRenter[externaladdress][externaladdress].latestRentDue;
         personToRenter[externaladdress][externaladdress].rentalDeposit=_deposit;
         personToRenter[externaladdress][externaladdress].monthlyRental=_monthlyRent;
+        personToRenter[externaladdress][externaladdress].tokenId=_tokenId;
     }
 
     function deposit(address externalAddress, uint256 _amount) public {
@@ -141,6 +143,7 @@ contract listing is ERC721, ERC721Burnable {
         string description;
         uint authorised;
         uint outstanding;
+        string tokenName;
     }
 
     mapping(string => Listing) public listingMap;
@@ -163,9 +166,11 @@ contract listing is ERC721, ERC721Burnable {
         listingMap[uri].description=_description;
         listingMap[uri].authorised=stats[3];
         listingMap[uri].outstanding=0;
+        listingMap[uri].tokenName=_tokenName;
     }
 
     function deactivateListing(string memory uri) public {
+        require(listingMap[uri].outstanding == 0);
         listingMap[uri].isActiveListing=0;
         for (uint i = 0; i < listingMap[uri].authorised; i++) {
             burn(i);
