@@ -217,7 +217,26 @@ a {
   padding: 10px;
   text-align: center;
   justify-content: center;
-  padding-top: 38px;
-  padding-left: 60px;
+  padding-top: 34px;
+  padding-left: 10px;
   background-color: lightgray;
+}
+
+#file-upload {
+  display: none;
+}
+
+#file-upload-label {
+  font-size: 1.3em;
+  padding: 10px 15px;
+  border: 1px solid #767676;
+  color: #767676;
+  border-radius: 4%;
+  cursor: pointer;
+}
+
+#file-upload-label:hover {
+  color: #000000;
+  border: 1px solid #000000;
+  background-color: #999;
 }

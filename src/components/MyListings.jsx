@@ -267,8 +267,13 @@ function MyListings() {
 
         <div id="right_side" className="floating-child">
           <div className="input-img">
+            <label for="file-upload" id="file-upload-label">
+              Upload Image of Property
+            </label>
             <input
               type="file"
+              id="file-upload"
+              name="file-upload"
               onChange={(e) => setFileImg(e.target.files[0])}
               style={{ color: "black" }}
               required
