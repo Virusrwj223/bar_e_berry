@@ -4,6 +4,7 @@ import { ethers } from "ethers";
 import { abi, contractAddress } from "../../CompiledContract/constants.js";
 import "../styles/AllListings.css";
 import { useNavigate } from "react-router-dom";
+import Incrementer from "../widgets/Incrementer.jsx";
 
 function AllListings() {
   const [contract, setContract] = useState("");
@@ -56,35 +57,41 @@ function AllListings() {
       try {
         const global_listing_data = [];
         const numUsers = parseInt(await contract.numUsers());
+
         for (let i = 0; i < numUsers; i++) {
           const address = await contract.registeredAddresses(i);
           const personData = await contract.person(walletAddress);
           const numOfListings = parseInt(personData[3]);
+
           for (let j = 0; j < numOfListings; j++) {
             const listing = await contract.personToLandlord(address, j);
-            const nft_uri = listing[2];
-            const deployed_contract_add = listing[1];
+            const nft_uri = await listing[2];
+            const deployed_contract_add = await listing[1];
             const childContract = new ethers.Contract(
               deployed_contract_add,
               abi,
               signer
             );
-            const landlordData = await childContract.listingMap(nft_uri);
-            if (parseInt(landlordData[5]) == 2) {
-              const img_uri = await get_img_uri(nft_uri);
-              await global_listing_data.push([
-                address,
-                j,
-                parseInt(landlordData[2]),
-                parseInt(landlordData[3]),
-                parseInt(landlordData[4]),
-                img_uri,
-                landlordData[6],
-                landlordData[7],
-              ]);
+            if (nft_uri != "") {
+              const landlordData = await childContract.listingMap(nft_uri);
+              if (parseInt(landlordData[5]) == 2) {
+                const img_uri = await get_img_uri(nft_uri);
+                global_listing_data.push([
+                  address,
+                  j,
+                  parseInt(landlordData[2]),
+                  parseInt(landlordData[3]),
+                  parseInt(landlordData[4]),
+                  img_uri,
+                  landlordData[6],
+                  landlordData[7],
+                  parseInt(landlordData[8]),
+                ]);
+              }
             }
           }
         }
+
         setGlobalListingData(global_listing_data);
       } catch (error) {
         console.log(error);
@@ -111,16 +118,17 @@ function AllListings() {
       owner_add,
       time,
       deposit,
-      monthlyRental,
+      parseInt(monthlyRental),
       sharesPurchased,
       listingNum
     );
-
     await listenForTransactionMine(bought, providers);
+
     const listing = await contract.personToLandlord(owner_add, listingNum);
     const nft_uri = listing[2];
     const deployed_contract_add = listing[1];
     const childContract = new ethers.Contract(deployed_contract_add, abi, sign);
+
     const buying = await childContract.purchaseListing(
       nft_uri,
       sharesPurchased,
@@ -191,10 +199,10 @@ function AllListings() {
                     Rental Duration: {dataPoint[2] / (30 * 24 * 60 * 60)} months
                   </p>
                   <p style={{ color: "black" }}>
-                    Rental Deposit: {dataPoint[3]} XRP
+                    Rental Deposit: {dataPoint[4]} XRP
                   </p>
                   <p style={{ color: "black" }}>
-                    Monthly Rental: {dataPoint[4]} XRP
+                    Monthly Rental: {dataPoint[3]} XRP
                   </p>
                 </div>
                 <div>
@@ -208,6 +216,7 @@ function AllListings() {
                       style={{ color: "black" }}
                     />
                   </div>
+                  <Incrementer />
                   <div>
                     <button
                       id="createListing"
@@ -218,7 +227,7 @@ function AllListings() {
                           dataPoint[0],
                           dataPoint[2],
                           dataPoint[3],
-                          dataPoint[4],
+                          (dataPoint[4] * sharesChosen) / dataPoint[8], //calculate monthly rental prop to shares purchased HERE
                           parseInt(sharesChosen),
                           dataPoint[1]
                         )
