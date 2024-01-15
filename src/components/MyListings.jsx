@@ -267,6 +267,15 @@ function MyListings() {
 
         <div id="right_side" className="floating-child">
           <div className="input-img">
+            {img!=null
+            ?<img
+                      src={URL.createObjectURL(img)}
+                      alt="uploaded image"
+                      className="house-image"
+            />
+            :<div id="no-image" >No Image</div>
+            }
+            <h1></h1>
             <label for="file-upload" id="file-upload-label">
               Upload Image of Property
             </label>
@@ -312,7 +321,7 @@ function MyListings() {
               />
             </div>
           </div>
-          <div className="lower-description">
+          <div>
             <input
               id="description"
               type="text"

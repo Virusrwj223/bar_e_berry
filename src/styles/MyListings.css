@@ -87,11 +87,12 @@ a {
 
 #right_side {
   width: 380px;
-  height: 515px;
+  height: 565px;
   position: relative;
   background: linear-gradient(to bottom, #ededed, #ffffff);
   margin-top: 5px;
   margin-right: 30px;
+  padding: 10px 20px;
   overflow: hidden;
   border-radius: 10px;
   justify-content: center;
@@ -139,11 +140,11 @@ a {
   background: transparent;
   text-align: center;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 .input-field-urml {
   width: 50%;
-  padding: 10px 0;
+  padding: 5px 0;
   margin: 5px 5px 5px 80px;
   border-left: 0;
   border-top: 0;
@@ -159,7 +160,7 @@ a {
   padding: 10px 10px;
   cursor: pointer;
   display: block;
-  margin: 30px 0px 30px 30px;
+  margin: 10px 0px 30px 30px;
   background: linear-gradient(to right, #ff3131, #ffad06);
   border: 0;
   outline: none;
@@ -212,13 +213,12 @@ a {
 }
 
 .input-img {
-  height: 100px;
-  border: 2px solid lightgray;
-  padding: 10px;
+  height: 200px;
+  width: 200px;
+  margin: auto;
   text-align: center;
   justify-content: center;
-  padding-top: 34px;
-  padding-left: 10px;
+  padding-bottom: 20px;
   background-color: lightgray;
 }
 
@@ -227,8 +227,8 @@ a {
 }
 
 #file-upload-label {
-  font-size: 1.3em;
-  padding: 10px 15px;
+  font-size: 0.8em;
+  padding: 5px 7.5px;
   border: 1px solid #767676;
   color: #767676;
   border-radius: 4%;
@@ -239,4 +239,14 @@ a {
   color: #000000;
   border: 1px solid #000000;
   background-color: #999;
+}
+
+#no-image {
+  font-size: 1.5em;
+  width: 200px;
+  height: 160px;
+  color: #767676;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
