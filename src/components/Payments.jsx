@@ -21,6 +21,7 @@ function Payments() {
   const [payBtn, setPayBtn] = useState("Pay");
   const [terminateBtn, setTerminateBtn] = useState("Terminate");
   const [sharesOutstanding, setSharesOutstanding] = useState("NO");
+  const [rentalCost, setRentalCost] = useState("");
   const [shareSell, setShareSell] = useState(0);
   const navigate = useNavigate();
 
@@ -55,10 +56,13 @@ function Payments() {
           walletAddress
         );
         const outstandingShares = parseInt(renterData[11]);
+        const rentalCost = parseInt(renterData[9]);
         if (outstandingShares > 0) {
           setSharesOutstanding(outstandingShares);
+          setRentalCost(`${rentalCost} XRP`);
         } else {
           setSharesOutstanding("NO");
+          setRentalCost(``);
         }
         const locked_amt = parseInt(renterData[6]);
         setAmount(locked_amt);
@@ -311,6 +315,7 @@ function Payments() {
             <div className="lower-right-actions">
               <div className="shares-status">
                 <p>{sharesOutstanding} SHARES</p>
+                <p>{rentalCost}</p>
               </div>
             </div>
           </div>
