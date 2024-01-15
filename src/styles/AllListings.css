@@ -90,7 +90,7 @@ a {
 }
 .feature-product-box {
   width: 200px;
-  height: 500px;
+  height: 430px;
   position: relative;
   margin: 6% auto;
   background: #ededed;
@@ -103,11 +103,12 @@ a {
   text-align: center;
 }
 .buy-button {
-  width: 85%;
+  width: 75%;
   padding: 10px 30px;
   cursor: pointer;
   margin-top: 10px;
   margin-bottom: 10px;
+  margin-right: 5px;
   background: linear-gradient(to right, #ff3131, #ffad06);
   border: 0;
   outline: none;
@@ -120,4 +121,26 @@ a {
 .house-image {
   max-width: 100%;
   max-height: 100%;
+}
+
+.incrementer-wrapper {
+  width: 25%;
+  height: 50px;
+  margin: 10px 5px 10px 5px;
+  display: flex;
+  background: #fff;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.user-interaction-wrapper {
+  display: flex;
+}
+.upper-description {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 1fr;
+}
+.lower-description {
+  margin-top: 3px;
 }

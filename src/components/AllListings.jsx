@@ -4,7 +4,6 @@ import { ethers } from "ethers";
 import { abi, contractAddress } from "../../CompiledContract/constants.js";
 import "../styles/AllListings.css";
 import { useNavigate } from "react-router-dom";
-import Incrementer from "../widgets/Incrementer.jsx";
 
 function AllListings() {
   const [contract, setContract] = useState("");
@@ -12,7 +11,7 @@ function AllListings() {
   const [globalListingData, setGlobalListingData] = useState([[]]);
   const [providers, setProviders] = useState(null);
   const [sign, setSign] = useState(null);
-  const [sharesChosen, setSharesChosen] = useState(null);
+  const [sharesChosen, setSharesChosen] = useState(1);
   const navigate = useNavigate();
 
   const get_img_uri = async (nft_uri) => {
@@ -38,7 +37,6 @@ function AllListings() {
         console.log(
           "Completed with ${transactionReceipt.confirmations} confirmations"
         );
-        //location.reload();
         resolve();
       });
     });
@@ -86,6 +84,8 @@ function AllListings() {
                   landlordData[6],
                   landlordData[7],
                   parseInt(landlordData[8]),
+                  parseInt(landlordData[9]),
+                  landlordData[10],
                 ]);
               }
             }
@@ -190,52 +190,62 @@ function AllListings() {
               </div>
 
               <div className="product-feature-text-container">
-                <div style={{ height: "165px" }}>
-                  <p style={{ color: "black" }}>
-                    <strong>{dataPoint[6]}</strong>
-                  </p>
-                  <p style={{ color: "black" }}>{dataPoint[7]}</p>
-                  <p style={{ color: "black" }}>
-                    Rental Duration: {dataPoint[2] / (30 * 24 * 60 * 60)} months
-                  </p>
-                  <p style={{ color: "black" }}>
-                    Rental Deposit: {dataPoint[4]} XRP
-                  </p>
-                  <p style={{ color: "black" }}>
-                    Monthly Rental: {dataPoint[3]} XRP
-                  </p>
-                </div>
                 <div>
-                  <div>
-                    <input
-                      id="time"
-                      type="text"
-                      className="input-field"
-                      placeholder="No Shares"
-                      onChange={(e) => setSharesChosen(e.target.value)}
-                      style={{ color: "black" }}
-                    />
+                  <div className="upper-description">
+                    <div className="upper-left-description">
+                      <p style={{ color: "black" }}>
+                        <strong>{dataPoint[6]}</strong>
+                      </p>
+                    </div>
+                    <div className="upper-right-description">
+                      <p style={{ color: "black" }}>
+                        <strong>{dataPoint[10]}</strong>
+                      </p>
+                      <p style={{ color: "black" }}>
+                        {dataPoint[9]} / {dataPoint[8]}
+                      </p>
+                    </div>
                   </div>
-                  <Incrementer />
-                  <div>
-                    <button
-                      id="createListing"
-                      type="button"
-                      className="buy-button"
-                      onClick={() =>
-                        purchase(
-                          dataPoint[0],
-                          dataPoint[2],
-                          dataPoint[3],
-                          (dataPoint[4] * sharesChosen) / dataPoint[8], //calculate monthly rental prop to shares purchased HERE
-                          parseInt(sharesChosen),
-                          dataPoint[1]
-                        )
-                      }
-                    >
-                      Buy
-                    </button>
+                  <div className="lower-description">
+                    <p style={{ color: "black" }}>{dataPoint[7]}</p>
+                    <p style={{ color: "black" }}>
+                      Rental Duration: {dataPoint[2] / (30 * 24 * 60 * 60)}{" "}
+                      months
+                    </p>
+                    <p style={{ color: "black" }}>
+                      Rental Deposit: {dataPoint[4]} XRP
+                    </p>
+                    <p style={{ color: "black" }}>
+                      Monthly Rental: {dataPoint[3]} XRP
+                    </p>
                   </div>
+                </div>
+                <div className="user-interaction-wrapper">
+                  <input
+                    type="text"
+                    className="incrementer-wrapper"
+                    placeholder="Shares"
+                    value={sharesChosen}
+                    onChange={(e) => setSharesChosen(e.target.value)}
+                    style={{ color: "black" }}
+                  />
+                  <button
+                    id="createListing"
+                    type="button"
+                    className="buy-button"
+                    onClick={() =>
+                      purchase(
+                        dataPoint[0],
+                        dataPoint[2],
+                        dataPoint[3],
+                        (dataPoint[4] * sharesChosen) / dataPoint[8], //calculate monthly rental prop to shares purchased HERE
+                        parseInt(sharesChosen),
+                        dataPoint[1]
+                      )
+                    }
+                  >
+                    Buy
+                  </button>
                 </div>
               </div>
             </div>
