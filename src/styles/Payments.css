@@ -173,20 +173,42 @@ a {
   margin: 6% auto;
   background: linear-gradient(to bottom, #ededed, #ffffff);
   padding: 5px;
-  margin-top: 20px;
   overflow: hidden;
   border-radius: 20px;
 }
 
 .terminate-group {
-  left: 30px;
-  position: relative;
-  transition: 0.5s;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 1fr;
+}
+
+.terminate-shares {
+  height: 50px;
+  width: 50px;
+  display: flex;
+  background: #fff;
+  border-radius: 12px;
+  text-align: center;
+  margin-top: 30px;
+  margin-left: 20px;
+}
+
+.terminate-btn {
+  width: 280px;
+  padding: 10px 30px;
+  cursor: pointer;
+  display: block;
+  margin: 30px 10px 30px 0;
+  background: linear-gradient(to right, #ff3131, #ffad06);
+  border: 0;
+  outline: none;
+  border-radius: 30px;
 }
 
 .terminate-status {
   text-align: center;
-  margin: 30px 10px 30px 0;
+  margin: 60px 10px 10px 0;
   font-size: 30px;
 }
 

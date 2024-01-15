@@ -271,17 +271,19 @@ function Payments() {
               <div className="terminate-group">
                 <input
                   id="withdrawingAmount"
-                  type="text"
-                  className="input-field"
+                  type="number"
+                  min="1"
+                  max={shareSell}
+                  className="terminate-shares"
                   placeholder="Shares"
                   value={shareSell}
-                  onChange={(e) => setShareSell(e.target.value)}
+                  onChange={(e) => setShareSell(parseInt(e.target.value))}
                   style={{ color: "black" }}
                 />
                 <button
                   id="terminateButton"
                   type="button"
-                  className="submit-btn"
+                  className="terminate-btn"
                   onClick={earlyTerminate}
                 >
                   {terminateBtn}

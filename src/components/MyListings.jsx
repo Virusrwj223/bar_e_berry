@@ -205,7 +205,9 @@ function MyListings() {
         </ul>
         <div className="right-elements"></div>
       </nav>
-      <h1 style={{ lineHeight: "1.5", "margin-top": "20px" }}>My Listings</h1>
+      <h1 style={{ "line-height": "1.5", "margin-top": "20px" }}>
+        My Listings
+      </h1>
       <div className="section">
         <div id="main-listings-box" className="my-listings">
           <div className="float-child">
@@ -220,19 +222,34 @@ function MyListings() {
                     />
                   </div>
                   <div className="product-feature-text-container">
-                    <p style={{ color: "black" }}>
-                      <strong>{dataPoint[6]}</strong>
-                    </p>
-                    <p style={{ color: "black" }}>{dataPoint[7]}</p>
-                    <p>Duration: {dataPoint[3] / (30 * 24 * 60 * 60)} months</p>
-                    <p style={{ color: "black" }}>
-                      Deposit: {dataPoint[4]} XRP
-                    </p>
-                    <p style={{ color: "black" }}>Rental: {dataPoint[5]} XRP</p>
-                    <p style={{ color: "black" }}>Ticker: {dataPoint[2]}</p>
-                    <p style={{ color: "black" }}>
-                      {dataPoint[9]}/{dataPoint[8]} shares
-                    </p>
+                    <div className="upper-description">
+                      <div className="upper-left-description">
+                        <p style={{ color: "black" }}>
+                          <strong>{dataPoint[6]}</strong>
+                        </p>
+                      </div>
+                      <div className="upper-right-description">
+                        <p style={{ color: "black" }}>
+                          <strong>{dataPoint[2]}</strong>
+                        </p>
+                        <p style={{ color: "black" }}>
+                          {dataPoint[9]}/{dataPoint[8]}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="lower-description">
+                      <p style={{ color: "black" }}>{dataPoint[7]}</p>
+                      <p>
+                        Duration: {dataPoint[3] / (30 * 24 * 60 * 60)} months
+                      </p>
+                      <p style={{ color: "black" }}>
+                        Deposit: {dataPoint[4]} XRP
+                      </p>
+                      <p style={{ color: "black" }}>
+                        Rental: {dataPoint[5]} XRP
+                      </p>
+                    </div>
+
                     <button
                       id="createListing"
                       type="button"
@@ -249,80 +266,90 @@ function MyListings() {
         </div>
 
         <div id="right_side" className="floating-child">
-          <input
-            id="title"
-            type="text"
-            className="input-field"
-            placeholder="Caption"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            style={{ color: "black" }}
-          />
-          <input
-            id="description"
-            type="text"
-            className="input-field"
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            style={{ color: "black" }}
-          />
-          <input
-            id="time"
-            type="text"
-            className="input-field"
-            placeholder="Rental Duration"
-            value={rentalDuration}
-            onChange={(e) => setRentalDuration(e.target.value)}
-            style={{ color: "black" }}
-          />
-          <input
-            id="deposit"
-            type="text"
-            className="input-field"
-            placeholder="Rental Deposit"
-            value={rentalDeposit}
-            onChange={(e) => setRentalDeposit(e.target.value)}
-            style={{ color: "black" }}
-          />
-          <input
-            id="monthly-rental"
-            type="text"
-            className="input-field"
-            placeholder="Monthly Rental"
-            value={monthlyRental}
-            onChange={(e) => setMonthlyRental(e.target.value)}
-            style={{ color: "black" }}
-          />
-          <input
-            id="token-name"
-            type="text"
-            className="input-field"
-            placeholder="Token Ticker"
-            value={tokenName}
-            onChange={(e) => setTokenName(e.target.value)}
-            style={{ color: "black" }}
-          />
-          <input
-            id="authorised-shares"
-            type="text"
-            className="input-field"
-            placeholder="Authorised Shares"
-            value={authorisedShares}
-            onChange={(e) => setAuthorisedShares(e.target.value)}
-            style={{ color: "black" }}
-          />
-          <input
-            type="file"
-            onChange={(e) => setFileImg(e.target.files[0])}
-            style={{ color: "black" }}
-            required
-          />
+          <div className="input-img">
+            <input
+              type="file"
+              onChange={(e) => setFileImg(e.target.files[0])}
+              style={{ color: "black" }}
+              required
+            />
+          </div>
+          <div className="upper-description">
+            <div className="upper-left-description">
+              <input
+                id="title"
+                type="text"
+                className="input-field-ulml"
+                placeholder="Caption"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                style={{ color: "black" }}
+              />
+            </div>
+            <div className="upper-right-description">
+              <input
+                id="token-name"
+                type="text"
+                className="input-field-urml"
+                placeholder="Ticker"
+                value={tokenName}
+                onChange={(e) => setTokenName(e.target.value)}
+                style={{ color: "black" }}
+              />
+              <input
+                id="authorised-shares"
+                type="text"
+                className="input-field-urml"
+                placeholder="Shares"
+                value={authorisedShares}
+                onChange={(e) => setAuthorisedShares(e.target.value)}
+                style={{ color: "black" }}
+              />
+            </div>
+          </div>
+          <div className="lower-description">
+            <input
+              id="description"
+              type="text"
+              className="input-field-ml"
+              placeholder="Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              style={{ color: "black" }}
+            />
+            <input
+              id="time"
+              type="text"
+              className="input-field-ml"
+              placeholder="Rental Duration"
+              value={rentalDuration}
+              onChange={(e) => setRentalDuration(e.target.value)}
+              style={{ color: "black" }}
+            />
+            <input
+              id="deposit"
+              type="text"
+              className="input-field-ml"
+              placeholder="Rental Deposit"
+              value={rentalDeposit}
+              onChange={(e) => setRentalDeposit(e.target.value)}
+              style={{ color: "black" }}
+            />
+            <input
+              id="monthly-rental"
+              type="text"
+              className="input-field-ml"
+              placeholder="Monthly Rental"
+              value={monthlyRental}
+              onChange={(e) => setMonthlyRental(e.target.value)}
+              style={{ color: "black" }}
+            />
+          </div>
 
           <button
             id="createListing"
             type="button"
-            className="submit-btn"
+            className="mint-btn"
             onClick={listProp}
           >
             {mintBtn}

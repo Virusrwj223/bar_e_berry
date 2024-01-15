@@ -213,20 +213,19 @@ function AllListings() {
                       months
                     </p>
                     <p style={{ color: "black" }}>
-                      Rental Deposit: {dataPoint[4]} XRP
+                      Deposit: {dataPoint[4]} XRP
                     </p>
-                    <p style={{ color: "black" }}>
-                      Monthly Rental: {dataPoint[3]} XRP
-                    </p>
+                    <p style={{ color: "black" }}>Rental: {dataPoint[3]} XRP</p>
                   </div>
                 </div>
                 <div className="user-interaction-wrapper">
                   <input
-                    type="text"
+                    type="number"
+                    min="1"
+                    max="5"
                     className="incrementer-wrapper"
-                    placeholder="Shares"
-                    value={sharesChosen}
-                    onChange={(e) => setSharesChosen(e.target.value)}
+                    placeholder="0"
+                    onChange={(e) => setSharesChosen(parseInt(e.target.value))}
                     style={{ color: "black" }}
                   />
                   <button
