@@ -89,7 +89,7 @@ function AllListings() {
                   landlordData[6],
                   landlordData[7],
                   parseInt(landlordData[8]),
-                  parseInt(landlordData[9]),
+                  parseInt(landlordData[8]) - parseInt(landlordData[9]),
                   landlordData[10],
                 ]);
               }
