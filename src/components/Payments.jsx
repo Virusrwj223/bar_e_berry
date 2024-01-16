@@ -119,7 +119,6 @@ function Payments() {
 
   const earlyTerminate = async () => {
     if (terminateStatus == "All Good!" || terminateStatus == "Terminate") {
-      console.log(shareSell);
       try {
         setTerminateBtn("Processing");
         const earlyTerminate = await contract.earlyTerminateRental(
@@ -132,7 +131,10 @@ function Payments() {
           walletAddress
         );
         const tokenId = parseInt(renterData[12]);
-        const listing = await contract.personToLandlord(walletAddress, tokenId);
+        const listing = await contract.personToLandlord(
+          renterData[10],
+          tokenId
+        );
         const nft_uri = listing[2];
         const deployed_contract_add = listing[1];
         const childContract = new ethers.Contract(
@@ -145,7 +147,9 @@ function Payments() {
           shareSell,
           walletAddress
         );
+
         await listenForTransactionMine(burn, providers);
+
         test();
         setTerminateBtn("Terminate");
       } catch (error) {
