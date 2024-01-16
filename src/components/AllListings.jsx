@@ -7,7 +7,6 @@ import NavBar from "../widgets/NavBar.jsx";
 import ListingCard from "../widgets/ListingCard.jsx";
 import listenForTransactionMine from "../../services/listenForTransactionMine.js";
 
-
 function AllListings() {
   const [contract, setContract] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
@@ -67,6 +66,7 @@ function AllListings() {
 
           for (let j = 0; j < numOfListings; j++) {
             const listing = await contract.personToLandlord(address, j);
+            console.log(listing);
             const nft_uri = await listing[2];
             const deployed_contract_add = await listing[1];
             const childContract = new ethers.Contract(
@@ -75,7 +75,9 @@ function AllListings() {
               signer
             );
             if (nft_uri != "") {
+              console.log(nft_uri);
               const landlordData = await childContract.listingMap(nft_uri);
+              console.log(landlordData);
               if (parseInt(landlordData[5]) == 2) {
                 const img_uri = await get_img_uri(nft_uri);
                 global_listing_data.push([
