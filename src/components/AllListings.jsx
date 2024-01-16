@@ -61,6 +61,7 @@ function AllListings() {
           const address = await contract.registeredAddresses(i);
           const personData = await contract.person(address);
           const numOfListings = parseInt(personData[3]);
+          console.log(numOfListings);
 
           for (let j = 0; j < numOfListings; j++) {
             const listing = await contract.personToLandlord(address, j);   
