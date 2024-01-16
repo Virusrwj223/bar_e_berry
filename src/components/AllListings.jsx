@@ -59,11 +59,12 @@ function AllListings() {
 
         for (let i = 0; i < numUsers; i++) {
           const address = await contract.registeredAddresses(i);
-          const personData = await contract.person(walletAddress);
+          const personData = await contract.person(address);
           const numOfListings = parseInt(personData[3]);
 
           for (let j = 0; j < numOfListings; j++) {
-            const listing = await contract.personToLandlord(address, j);
+            const listing = await contract.personToLandlord(address, j);   
+            console.log(listing);
             const nft_uri = await listing[2];
             const deployed_contract_add = await listing[1];
             const childContract = new ethers.Contract(
@@ -72,7 +73,9 @@ function AllListings() {
               signer
             );
             if (nft_uri != "") {
+              console.log(nft_uri)
               const landlordData = await childContract.listingMap(nft_uri);
+              console.log(landlordData)
               if (parseInt(landlordData[5]) == 2) {
                 const img_uri = await get_img_uri(nft_uri);
                 global_listing_data.push([
