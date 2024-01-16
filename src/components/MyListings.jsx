@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "../styles/MyListings.css";
-import BARE from "../assets/BAR-E TrxBg.png";
 import { ethers } from "ethers";
 import { abi, contractAddress } from "../../CompiledContract/constants.js";
 import pinFileToIPFS from "../../services/pinFileToIpfs.js";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../widgets/NavBar.jsx";
+import ListingCard from "../widgets/ListingCard.jsx";
+import listenForTransactionMine from "../../services/listenForTransactionMine.js";
 
 function MyListings() {
   const [title, setTitle] = useState("");
@@ -39,7 +40,7 @@ function MyListings() {
       return [400, e];
     }
   };
-
+  /*
   async function listenForTransactionMine(transactionResponse, provider) {
     console.log("Mining ${transactionResponse.hash}...");
     return new Promise((resolve, reject) => {
@@ -52,6 +53,7 @@ function MyListings() {
       });
     });
   }
+  */
 
   const test = async () => {
     if (typeof window.ethereum != "undefined") {
@@ -85,22 +87,21 @@ function MyListings() {
           const contTitle = landlordData[6];
           const contDesc = landlordData[7];
           const authorised_shares = parseInt(landlordData[8]);
-          const unissued_shares =
-            parseInt(landlordData[8]) - parseInt(landlordData[9]);
+          const shares_bought = parseInt(landlordData[9]);
           const token_ticker = landlordData[10];
           const img_uri = await get_img_uri(nft_uri);
           if (landlordData[5] == 2) {
             img_uri_lst.push([
-              img_uri,
               i,
-              token_ticker,
-              duration,
-              deposit,
-              cost,
               contTitle,
               contDesc,
+              token_ticker,
+              shares_bought,
               authorised_shares,
-              unissued_shares,
+              duration,
+              cost,
+              deposit,
+              img_uri,
             ]);
           }
         }
@@ -170,7 +171,7 @@ function MyListings() {
 
   return (
     <div>
-      <NavBar />
+      <NavBar type={2} />
       <h1 style={{ "line-height": "1.5", "margin-top": "20px" }}>
         My Listings
       </h1>
@@ -180,47 +181,14 @@ function MyListings() {
             {imgUri.map((dataPoint) => {
               return (
                 <div className="feature-product-box card">
-                  <div className="product-feature-img">
-                    <img
-                      src={`https://gateway.pinata.cloud/ipfs/${dataPoint[0]}`}
-                      alt="Picture of a house"
-                      className="house-image"
-                    />
-                  </div>
-                  <div className="product-feature-text-container">
-                    <div className="upper-description">
-                      <div className="upper-left-description">
-                        <p style={{ color: "black" }}>
-                          <strong>{dataPoint[6]}</strong>
-                        </p>
-                      </div>
-                      <div className="upper-right-description">
-                        <p style={{ color: "black" }}>
-                          <strong>{dataPoint[2]}</strong>
-                        </p>
-                        <p style={{ color: "black" }}>
-                          {dataPoint[9]}/{dataPoint[8]}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="lower-description">
-                      <p style={{ color: "black" }}>{dataPoint[7]}</p>
-                      <p>
-                        Duration: {dataPoint[3] / (30 * 24 * 60 * 60)} months
-                      </p>
-                      <p style={{ color: "black" }}>
-                        Deposit: {dataPoint[4]} XRP
-                      </p>
-                      <p style={{ color: "black" }}>
-                        Rental: {dataPoint[5]} XRP
-                      </p>
-                    </div>
+                  <ListingCard dataPoint={dataPoint} />
 
+                  <div className="ML-user-interaction-box-area">
                     <button
                       id="createListing"
                       type="button"
                       className="delete-button"
-                      onClick={() => removeList(dataPoint[1])}
+                      onClick={() => removeList(dataPoint[0])}
                     >
                       Delete
                     </button>

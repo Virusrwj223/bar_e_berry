@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import BARE from "../assets/BAR-E TrxBg.png";
 import xrp_transact from "../../services/xrp_transactions";
 import { ethers } from "ethers";
 import { abi, contractAddress } from "../../CompiledContract/constants.js";
 import "../styles/Payments.css";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../widgets/NavBar.jsx";
+import listenForTransactionMine from "../../services/listenForTransactionMine.js";
 
 function Payments() {
   const [contract, setContract] = useState("");
@@ -25,7 +25,7 @@ function Payments() {
   const [rentalCost, setRentalCost] = useState("");
   const [shareSell, setShareSell] = useState(0);
   const navigate = useNavigate();
-
+  /*
   async function listenForTransactionMine(transactionResponse, provider) {
     console.log("Mining ${transactionResponse.hash}...");
     return new Promise((resolve, reject) => {
@@ -38,6 +38,7 @@ function Payments() {
       });
     });
   }
+  */
 
   const test = async () => {
     if (typeof window.ethereum != "undefined") {
@@ -118,6 +119,7 @@ function Payments() {
 
   const earlyTerminate = async () => {
     if (terminateStatus == "All Good!" || terminateStatus == "Terminate") {
+      console.log(shareSell);
       try {
         setTerminateBtn("Processing");
         const earlyTerminate = await contract.earlyTerminateRental(
@@ -168,7 +170,7 @@ function Payments() {
 
   return (
     <div>
-      <NavBar />
+      <NavBar type={2} />
 
       <div className="dashboard">
         <div className="value">

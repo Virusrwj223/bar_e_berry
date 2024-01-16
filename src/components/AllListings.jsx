@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import BARE from "../assets/BAR-E TrxBg.png";
 import { ethers } from "ethers";
 import { abi, contractAddress } from "../../CompiledContract/constants.js";
 import "../styles/AllListings.css";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../widgets/NavBar.jsx";
+import ListingCard from "../widgets/ListingCard.jsx";
+import listenForTransactionMine from "../../services/listenForTransactionMine.js";
+
 
 function AllListings() {
   const [contract, setContract] = useState("");
@@ -30,7 +32,7 @@ function AllListings() {
       return [400, e];
     }
   };
-
+  /*
   async function listenForTransactionMine(transactionResponse, provider) {
     console.log("Mining ${transactionResponse.hash}...");
     return new Promise((resolve, reject) => {
@@ -42,6 +44,7 @@ function AllListings() {
       });
     });
   }
+  */
   const test = async () => {
     if (typeof window.ethereum != "undefined") {
       await window.ethereum.request({ method: "eth_requestAccounts" });
@@ -61,7 +64,6 @@ function AllListings() {
           const address = await contract.registeredAddresses(i);
           const personData = await contract.person(address);
           const numOfListings = parseInt(personData[3]);
-          console.log(numOfListings);
 
           for (let j = 0; j < numOfListings; j++) {
             const listing = await contract.personToLandlord(address, j);
@@ -77,17 +79,17 @@ function AllListings() {
               if (parseInt(landlordData[5]) == 2) {
                 const img_uri = await get_img_uri(nft_uri);
                 global_listing_data.push([
-                  address,
                   j,
-                  parseInt(landlordData[2]),
-                  parseInt(landlordData[3]),
-                  parseInt(landlordData[4]),
-                  img_uri,
                   landlordData[6],
                   landlordData[7],
-                  parseInt(landlordData[8]),
-                  parseInt(landlordData[9]),
                   landlordData[10],
+                  parseInt(landlordData[9]),
+                  parseInt(landlordData[8]),
+                  parseInt(landlordData[2]),
+                  parseInt(landlordData[4]),
+                  parseInt(landlordData[3]),
+                  img_uri,
+                  address,
                 ]);
               }
             }
@@ -142,78 +144,42 @@ function AllListings() {
 
   return (
     <div>
-      <NavBar />
+      <NavBar type={2} />
 
       <h1 style={{ "line-height": "1.5" }}>All Listings</h1>
       <div className="feature-product-container">
         {globalListingData.map((dataPoint) => {
           return (
             <div className="feature-product-box card">
-              <div className="product-feature-img">
-                <img
-                  src={`https://gateway.pinata.cloud/ipfs/${dataPoint[5]}`}
-                  alt="Picture of a house"
-                  className="house-image"
-                />
-              </div>
+              <ListingCard dataPoint={dataPoint} />
 
-              <div className="product-feature-text-container">
-                <div>
-                  <div className="upper-description">
-                    <div className="upper-left-description">
-                      <p style={{ color: "black" }}>
-                        <strong>{dataPoint[6]}</strong>
-                      </p>
-                    </div>
-                    <div className="upper-right-description">
-                      <p style={{ color: "black" }}>
-                        <strong>{dataPoint[10]}</strong>
-                      </p>
-                      <p style={{ color: "black" }}>
-                        {dataPoint[9]} / {dataPoint[8]}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="lower-description">
-                    <p style={{ color: "black" }}>{dataPoint[7]}</p>
-                    <p style={{ color: "black" }}>
-                      Rental Duration: {dataPoint[2] / (30 * 24 * 60 * 60)}{" "}
-                      months
-                    </p>
-                    <p style={{ color: "black" }}>
-                      Deposit: {dataPoint[4]} XRP
-                    </p>
-                    <p style={{ color: "black" }}>Rental: {dataPoint[3]} XRP</p>
-                  </div>
-                </div>
-                <div className="user-interaction-wrapper">
-                  <input
-                    type="number"
-                    min="1"
-                    max="5"
-                    className="incrementer-wrapper"
-                    placeholder="0"
-                    onChange={(e) => setSharesChosen(parseInt(e.target.value))}
-                    style={{ color: "black" }}
-                  />
-                  <button
-                    id="createListing"
-                    type="button"
-                    className="buy-button"
-                    onClick={() =>
-                      purchase(
-                        dataPoint[0],
-                        dataPoint[2],
-                        dataPoint[3],
-                        (dataPoint[4] * sharesChosen) / dataPoint[8], //calculate monthly rental prop to shares purchased HERE
-                        parseInt(sharesChosen),
-                        dataPoint[1]
-                      )
-                    }
-                  >
-                    Buy
-                  </button>
-                </div>
+              <div className="user-interaction-wrapper">
+                <input
+                  type="number"
+                  min="1"
+                  max="5"
+                  className="incrementer-wrapper"
+                  placeholder="0"
+                  onChange={(e) => setSharesChosen(parseInt(e.target.value))}
+                  style={{ color: "black" }}
+                />
+                <button
+                  id="createListing"
+                  type="button"
+                  className="buy-button"
+                  onClick={() =>
+                    purchase(
+                      dataPoint[10],
+                      dataPoint[6],
+                      dataPoint[8],
+                      (dataPoint[7] * sharesChosen) / dataPoint[5],
+                      parseInt(sharesChosen),
+                      dataPoint[0]
+                    )
+                  }
+                >
+                  Buy
+                </button>
               </div>
             </div>
           );

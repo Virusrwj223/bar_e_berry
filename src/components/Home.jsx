@@ -3,41 +3,13 @@ import BARE from "../assets/BAR-E TrxBg.png";
 import House from "../assets/SuCasaDesign-Modern-9335be77ca0446c7883c5cf8d974e47c.jpg";
 import "../styles/Home.css";
 import { useNavigate } from "react-router-dom";
+import NavBar from "../widgets/NavBar";
 
 function Home() {
   const navigate = useNavigate();
   return (
     <div>
-      <nav className="navigation">
-        <a
-          onClick={() => navigate("/", { replace: true })}
-          style={{ cursor: "pointer" }}
-          className="logo"
-        >
-          <img src={BARE} alt="Picture of a house" width="180px" />
-        </a>
-        <ul className="menu">
-          <li>
-            <a
-              onClick={() => navigate("/", { replace: true })}
-              style={{ cursor: "pointer" }}
-              className="active"
-            >
-              Home
-            </a>
-          </li>
-        </ul>
-        <div className="right-elements">
-          <a
-            onClick={() => navigate("/login", { replace: true })}
-            className="user"
-            style={{ cursor: "pointer" }}
-          >
-            Login
-          </a>
-        </div>
-      </nav>
-
+      <NavBar type={1} />
       <section id="main">
         <div className="main-content">
           <div className="main-text">
