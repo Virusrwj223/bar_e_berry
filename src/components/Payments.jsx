@@ -23,6 +23,7 @@ function Payments() {
   const [terminateBtn, setTerminateBtn] = useState("Terminate");
   const [sharesOutstanding, setSharesOutstanding] = useState("NO");
   const [rentalCost, setRentalCost] = useState("");
+  const [depositCost, setDepositCost] = useState("");
   const [shareSell, setShareSell] = useState(0);
   const navigate = useNavigate();
   /*
@@ -59,12 +60,15 @@ function Payments() {
         );
         const outstandingShares = parseInt(renterData[11]);
         const rentalCost = parseInt(renterData[9]);
+        const depositCost = parseInt(renterData[8]);
         if (outstandingShares > 0) {
           setSharesOutstanding(outstandingShares);
-          setRentalCost(`${rentalCost} XRP`);
+          setRentalCost(`${rentalCost} XRP Rent`);
+          setDepositCost(`${depositCost} XRP Deposit`);
         } else {
           setSharesOutstanding("NO");
           setRentalCost(``);
+          setDepositCost(``);
         }
         const locked_amt = parseInt(renterData[6]);
         setAmount(locked_amt);
@@ -288,6 +292,7 @@ function Payments() {
               <div className="shares-status">
                 <p>{sharesOutstanding} SHARES</p>
                 <p>{rentalCost}</p>
+                <p>{depositCost}</p>
               </div>
             </div>
           </div>

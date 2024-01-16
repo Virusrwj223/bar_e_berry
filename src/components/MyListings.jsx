@@ -40,20 +40,6 @@ function MyListings() {
       return [400, e];
     }
   };
-  /*
-  async function listenForTransactionMine(transactionResponse, provider) {
-    console.log("Mining ${transactionResponse.hash}...");
-    return new Promise((resolve, reject) => {
-      provider.once(transactionResponse.hash, (transactionReceipt) => {
-        console.log(
-          "Completed with ${transactionReceipt.confirmations} confirmations"
-        );
-        //location.reload();
-        resolve();
-      });
-    });
-  }
-  */
 
   const test = async () => {
     if (typeof window.ethereum != "undefined") {
@@ -248,7 +234,8 @@ function MyListings() {
               />
               <input
                 id="authorised-shares"
-                type="text"
+                type="number"
+                min="1"
                 className="input-field-urml"
                 placeholder="Shares"
                 value={authorisedShares}
@@ -269,7 +256,8 @@ function MyListings() {
             />
             <input
               id="time"
-              type="text"
+              type="number"
+              min="1"
               className="input-field-ml"
               placeholder="Rental Duration"
               value={rentalDuration}
@@ -278,7 +266,8 @@ function MyListings() {
             />
             <input
               id="deposit"
-              type="text"
+              type="number"
+              min="1"
               className="input-field-ml"
               placeholder="Rental Deposit"
               value={rentalDeposit}
@@ -287,7 +276,8 @@ function MyListings() {
             />
             <input
               id="monthly-rental"
-              type="text"
+              type="number"
+              min="1"
               className="input-field-ml"
               placeholder="Monthly Rental"
               value={monthlyRental}

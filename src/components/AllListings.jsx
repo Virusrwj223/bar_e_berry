@@ -120,7 +120,7 @@ function AllListings() {
       walletAddress,
       owner_add,
       time,
-      deposit,
+      parseInt(deposit),
       parseInt(monthlyRental),
       sharesPurchased,
       listingNum
@@ -170,7 +170,7 @@ function AllListings() {
                     purchase(
                       dataPoint[10],
                       dataPoint[6],
-                      dataPoint[8],
+                      (dataPoint[8] * sharesChosen) / dataPoint[5],
                       (dataPoint[7] * sharesChosen) / dataPoint[5],
                       parseInt(sharesChosen),
                       dataPoint[0]
