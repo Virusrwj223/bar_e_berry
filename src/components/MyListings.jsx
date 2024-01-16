@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 import { abi, contractAddress } from "../../CompiledContract/constants.js";
 import pinFileToIPFS from "../../services/pinFileToIpfs.js";
 import { useNavigate } from "react-router-dom";
+import NavBar from "../widgets/NavBar.jsx";
 
 function MyListings() {
   const [title, setTitle] = useState("");
@@ -169,42 +170,7 @@ function MyListings() {
 
   return (
     <div>
-      <nav className="navigation">
-        <a
-          onClick={() => navigate("/payments", { replace: true })}
-          style={{ cursor: "pointer" }}
-          className="logo"
-        >
-          <img src={BARE} alt="Brand Logo" width="180px" />
-        </a>
-        <ul className="menu">
-          <li>
-            <a
-              onClick={() => navigate("/myListings", { replace: true })}
-              style={{ cursor: "pointer" }}
-            >
-              My Listings
-            </a>
-          </li>
-          <li>
-            <a
-              onClick={() => navigate("/allListings", { replace: true })}
-              style={{ cursor: "pointer" }}
-            >
-              All Listings
-            </a>
-          </li>
-          <li>
-            <a
-              onClick={() => navigate("/payments", { replace: true })}
-              style={{ cursor: "pointer" }}
-            >
-              My Space
-            </a>
-          </li>
-        </ul>
-        <div className="right-elements"></div>
-      </nav>
+      <NavBar />
       <h1 style={{ "line-height": "1.5", "margin-top": "20px" }}>
         My Listings
       </h1>
@@ -267,15 +233,17 @@ function MyListings() {
 
         <div id="right_side" className="floating-child">
           <div className="input-img">
-            {img!=null
-            ?<img
-                      src={URL.createObjectURL(img)}
-                      alt="uploaded image"
-                      className="house-image"
-            />
-            :<div id="no-image" >No Image</div>
-            }
+            {img != null ? (
+              <img
+                src={URL.createObjectURL(img)}
+                alt="uploaded image"
+                className="house-image"
+              />
+            ) : (
+              <div id="no-image">No Image</div>
+            )}
             <h1></h1>
+            {/*DONT REMOVE*/}
             <label for="file-upload" id="file-upload-label">
               Upload Image of Property
             </label>

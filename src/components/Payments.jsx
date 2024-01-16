@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 import { abi, contractAddress } from "../../CompiledContract/constants.js";
 import "../styles/Payments.css";
 import { useNavigate } from "react-router-dom";
+import NavBar from "../widgets/NavBar.jsx";
 
 function Payments() {
   const [contract, setContract] = useState("");
@@ -167,42 +168,7 @@ function Payments() {
 
   return (
     <div>
-      <nav className="navigation">
-        <a
-          onClick={() => navigate("/payments", { replace: true })}
-          style={{ cursor: "pointer" }}
-          className="logo"
-        >
-          <img src={BARE} alt="Picture of a house" width="180px" />
-        </a>
-        <ul className="menu">
-          <li>
-            <a
-              onClick={() => navigate("/myListings", { replace: true })}
-              style={{ cursor: "pointer" }}
-            >
-              My Listings
-            </a>
-          </li>
-          <li>
-            <a
-              onClick={() => navigate("/allListings", { replace: true })}
-              style={{ cursor: "pointer" }}
-            >
-              All Listings
-            </a>
-          </li>
-          <li>
-            <a
-              onClick={() => navigate("/payments", { replace: true })}
-              style={{ cursor: "pointer" }}
-            >
-              My Space
-            </a>
-          </li>
-        </ul>
-        <div className="right-elements"></div>
-      </nav>
+      <NavBar />
 
       <div className="dashboard">
         <div className="value">
