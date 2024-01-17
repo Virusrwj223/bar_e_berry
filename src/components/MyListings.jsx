@@ -156,11 +156,10 @@ function MyListings() {
   };
 
   return (
-    <div>
+    <div className="overarching-box">
       <NavBar type={2} />
-      <h1 style={{ "line-height": "1.5", "margin-top": "20px" }}>
-        My Listings
-      </h1>
+      <h1 style={{ marginTop: "30px", marginBottom: "10px" }}>My Listings</h1>
+
       <div className="section">
         <div id="main-listings-box" className="my-listings">
           <div className="float-child">

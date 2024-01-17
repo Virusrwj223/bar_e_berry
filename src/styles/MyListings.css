@@ -13,6 +13,9 @@ body {
   padding: 0px;
   font-family: poppins;
 }
+.overarching-box {
+  position: relative;
+}
 
 .main-listings-box {
   padding: 0px 15px;
