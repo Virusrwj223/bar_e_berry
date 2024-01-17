@@ -63,8 +63,8 @@ function Payments() {
         const rentalCost = parseInt(renterData[9]);
         const depositCost = parseInt(renterData[8]);
         if (outstandingShares > 0) {
-          setSharesOutstanding([0, outstandingShares]);
-          setSharesLeft(outstandingShares);
+          setSharesOutstanding(outstandingShares);
+          setSharesLeft([1, outstandingShares]);
           setRentalCost(`${rentalCost} XRP Rent`);
           setDepositCost(`${depositCost} XRP Deposit`);
         } else {
