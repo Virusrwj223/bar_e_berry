@@ -25,6 +25,7 @@ function Payments() {
   const [rentalCost, setRentalCost] = useState("");
   const [depositCost, setDepositCost] = useState("");
   const [shareSell, setShareSell] = useState(0);
+  const [sharesLeft, setSharesLeft] = useState([0, 0]);
   const navigate = useNavigate();
   /*
   async function listenForTransactionMine(transactionResponse, provider) {
@@ -62,11 +63,13 @@ function Payments() {
         const rentalCost = parseInt(renterData[9]);
         const depositCost = parseInt(renterData[8]);
         if (outstandingShares > 0) {
-          setSharesOutstanding(outstandingShares);
+          setSharesOutstanding([0, outstandingShares]);
+          setSharesLeft(outstandingShares);
           setRentalCost(`${rentalCost} XRP Rent`);
           setDepositCost(`${depositCost} XRP Deposit`);
         } else {
           setSharesOutstanding("NO");
+          setSharesLeft([0, 0]);
           setRentalCost(``);
           setDepositCost(``);
         }
@@ -252,8 +255,8 @@ function Payments() {
                 <input
                   id="withdrawingAmount"
                   type="number"
-                  min="1"
-                  max={shareSell}
+                  min={`${sharesLeft[0]}`}
+                  max={`${sharesLeft[1]}`}
                   className="terminate-shares"
                   placeholder="Shares"
                   value={shareSell}
