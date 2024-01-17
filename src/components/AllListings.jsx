@@ -143,9 +143,8 @@ function AllListings() {
 
   return (
     <div>
-      <NavBar type={2} />
+      <NavBar type={"AL"} />
 
-      <h1 style={{ "line-height": "1.5" }}>All Listings</h1>
       <div className="feature-product-container">
         {globalListingData.map((dataPoint) => {
           return (

@@ -157,8 +157,7 @@ function MyListings() {
 
   return (
     <div className="overarching-box">
-      <NavBar type={2} />
-      <h1 style={{ marginTop: "30px", marginBottom: "10px" }}>My Listings</h1>
+      <NavBar type={"ML"} />
 
       <div className="section">
         <div id="main-listings-box" className="my-listings">

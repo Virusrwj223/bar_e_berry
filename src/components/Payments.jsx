@@ -178,7 +178,7 @@ function Payments() {
 
   return (
     <div>
-      <NavBar type={2} />
+      <NavBar type={"P"} />
 
       <div className="dashboard">
         <div className="value">

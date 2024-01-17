@@ -1,12 +1,67 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/NavBar.css";
 import BARE from "../assets/BAR-E TrxBg.png";
 import { useNavigate } from "react-router-dom";
 
-function NavBar(type) {
+function NavBar({ type }) {
   const navigate = useNavigate();
+  const [MLColor, setMLColor] = useState(
+    <a
+      onClick={() => navigate("/myListings", { replace: true })}
+      style={{ cursor: "pointer", color: "white" }}
+    >
+      My Listings
+    </a>
+  );
+  const [ALColor, setALColor] = useState(
+    <a
+      onClick={() => navigate("/allListings", { replace: true })}
+      style={{ cursor: "pointer", color: "white" }}
+    >
+      All Listings
+    </a>
+  );
+  const [PColor, setPColor] = useState(
+    <a
+      onClick={() => navigate("/payments", { replace: true })}
+      style={{ cursor: "pointer", color: "white" }}
+    >
+      My Space
+    </a>
+  );
 
-  if (type["type"] == 1) {
+  useEffect(() => {
+    if (type == "ML") {
+      setMLColor(
+        <a
+          onClick={() => navigate("/myListings", { replace: true })}
+          style={{ cursor: "pointer", color: "grey" }}
+        >
+          My Listings
+        </a>
+      );
+    } else if (type == "AL") {
+      setALColor(
+        <a
+          onClick={() => navigate("/allListings", { replace: true })}
+          style={{ cursor: "pointer", color: "grey" }}
+        >
+          All Listings
+        </a>
+      );
+    } else if (type == "P") {
+      setPColor(
+        <a
+          onClick={() => navigate("/payments", { replace: true })}
+          style={{ cursor: "pointer", color: "grey" }}
+        >
+          My Space
+        </a>
+      );
+    }
+  }, []);
+
+  if (type == 1) {
     return (
       <nav className="navigation">
         <a
@@ -49,30 +104,9 @@ function NavBar(type) {
           <img src={BARE} alt="Brand Logo" width="180px" />
         </a>
         <ul className="menu">
-          <li>
-            <a
-              onClick={() => navigate("/myListings", { replace: true })}
-              style={{ cursor: "pointer" }}
-            >
-              My Listings
-            </a>
-          </li>
-          <li>
-            <a
-              onClick={() => navigate("/allListings", { replace: true })}
-              style={{ cursor: "pointer" }}
-            >
-              All Listings
-            </a>
-          </li>
-          <li>
-            <a
-              onClick={() => navigate("/payments", { replace: true })}
-              style={{ cursor: "pointer" }}
-            >
-              My Space
-            </a>
-          </li>
+          <li>{MLColor}</li>
+          <li>{ALColor}</li>
+          <li>{PColor}</li>
         </ul>
         <div className="right-elements">
           <li>
