@@ -176,7 +176,7 @@ function AllListings() {
                     )
                   }
                 >
-                  Buy
+                  Rent
                 </button>
               </div>
             </div>
