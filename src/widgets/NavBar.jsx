@@ -35,7 +35,7 @@ function NavBar({ type }) {
       setMLColor(
         <a
           onClick={() => navigate("/myListings", { replace: true })}
-          style={{ cursor: "pointer", color: "grey" }}
+          style={{ cursor: "pointer", color: "white", opacity: "1" }}
         >
           My Listings
         </a>
@@ -44,7 +44,7 @@ function NavBar({ type }) {
       setALColor(
         <a
           onClick={() => navigate("/allListings", { replace: true })}
-          style={{ cursor: "pointer", color: "grey" }}
+          style={{ cursor: "pointer", color: "white", opacity: "1" }}
         >
           All Listings
         </a>
@@ -53,7 +53,7 @@ function NavBar({ type }) {
       setPColor(
         <a
           onClick={() => navigate("/payments", { replace: true })}
-          style={{ cursor: "pointer", color: "grey" }}
+          style={{ cursor: "pointer", color: "white", opacity: "1" }}
         >
           My Space
         </a>
