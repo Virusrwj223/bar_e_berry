@@ -234,6 +234,7 @@ function MyListings() {
                 id="authorised-shares"
                 type="number"
                 min="1"
+                max="6"
                 className="input-field-urml"
                 placeholder="Shares"
                 value={authorisedShares}
@@ -255,7 +256,7 @@ function MyListings() {
             <input
               id="time"
               type="number"
-              min="1"
+              min="3"
               className="input-field-ml"
               placeholder="Rental Duration"
               value={rentalDuration}
