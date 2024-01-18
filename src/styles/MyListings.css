@@ -24,6 +24,7 @@ body {
 
 .section {
   display: flex;
+  margin-top: 50px;
 }
 
 #right_side {
